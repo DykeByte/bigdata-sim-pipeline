@@ -1,0 +1,14 @@
+[
+    {
+        "canal": "APP",
+        "ventas": 285000.0
+    },
+    {
+        "canal": "POS",
+        "ventas": 1910000.0
+    },
+    {
+        "canal": "WEB",
+        "ventas": 1050000.0
+    }
+]

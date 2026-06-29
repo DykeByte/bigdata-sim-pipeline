@@ -1,0 +1,32 @@
+[
+    {
+        "id_evento": 11,
+        "id_cliente": 111,
+        "tipo": "busqueda",
+        "producto": 2010
+    },
+    {
+        "id_evento": 12,
+        "id_cliente": 112,
+        "tipo": "click",
+        "producto": 2011
+    },
+    {
+        "id_evento": 13,
+        "id_cliente": 113,
+        "tipo": "compra",
+        "producto": 2012
+    },
+    {
+        "id_evento": 14,
+        "id_cliente": 114,
+        "tipo": "click",
+        "producto": 2013
+    },
+    {
+        "id_evento": 15,
+        "id_cliente": 110,
+        "tipo": "busqueda",
+        "producto": 2010
+    }
+]

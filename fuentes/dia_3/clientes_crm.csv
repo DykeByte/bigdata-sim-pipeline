@@ -1,0 +1,6 @@
+id_cliente,nombre,apellido,email,segmento,ciudad
+110,Valentina,Fuentes,valentina@email.com,Regular,Valparaiso
+111,Matias,Herrera,matias@email.com,Nuevo,Santiago
+112,Camila,Navarro,camila@email.com,Premium,Concepcion
+113,Felipe,Rojas,felipe@email.com,Regular,Santiago
+114,Isidora,Vega,isidora@email.com,Nuevo,Temuco
