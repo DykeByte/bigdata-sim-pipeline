@@ -1,0 +1,8 @@
+﻿tienda_key;nombre_tienda;region;tipo_tienda
+1;Tienda Santiago Centro;Metropolitana;Flagship
+2;Tienda Providencia;Metropolitana;Estándar
+3;Tienda Maipú;Metropolitana;Estándar
+4;Tienda Valparaíso;Valparaíso;Estándar
+5;Tienda Concepción;Biobío;Estándar
+6;Tienda Antofagasta;Antofagasta;Express
+7;Tienda Temuco;Araucanía;Express

@@ -47,7 +47,7 @@ def procesar_dia(nombre_dia):
 
     origen      = FUENTES_DIR / nombre_dia
     eventos     = cargar_topic()
-    fecha_carga = datetime.now().strftime("2026-06-10")
+    fecha_carga = datetime.now().strftime("%Y-%m-%d")
 
     #%Y-%m-%d  -->fecha x defecto 
 

@@ -1,0 +1,16 @@
+﻿producto_key;id_producto;nombre_producto;categoria;proveedor;precio_base
+2001;2001;Notebook Lenovo;Tecnología;Lenovo;140000.0
+2002;2002;Smartphone Samsung;Tecnología;Samsung;280000.0
+2003;2003;Polera Hombre;Vestuario;Nike;30000.0
+2004;2004;Silla Oficina;Hogar;Ikea;15000.0
+2005;2005;Audífonos Sony;Tecnología;Sony;70000.0
+2006;2006;Tablet Huawei;Tecnología;Huawei;100000.0
+2007;2007;Zapatos Mujer;Vestuario;Adidas;50000.0
+2008;2008;Microondas;Hogar;LG;80000.0
+2009;2009;Monitor Dell;Tecnología;Dell;120000.0
+2010;2010;Mochila;Vestuario;Puma;25000.0
+2011;2011;Chaqueta Hombre;Vestuario;Nike;60000.0
+2012;2012;Licuadora;Hogar;Oster;35000.0
+2013;2013;Teclado Mecánico;Tecnología;Logitech;55000.0
+2014;2014;Lámpara LED;Hogar;Philips;20000.0
+2015;2015;Zapatillas Running;Vestuario;New Balance;45000.0

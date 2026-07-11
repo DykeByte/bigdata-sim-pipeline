@@ -1,90 +1,131 @@
+# =============================================================================
+# SCRIPT: 01_crear_dwh.py
+# DESCRIPCIÓN: Crea el Data Warehouse con el modelo estrella para EV4
+#              RetailStart Chile S.A.
+# TABLAS:
+#   DimCliente, DimProducto, DimTiempo, DimCanal, DimTienda, FactVentas
+# =============================================================================
+
 import sqlite3
 from pathlib import Path
 
 DB_PATH = Path(__file__).resolve().parent.parent / "warehouse" / "retailstart.db"
-
 DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-conn = sqlite3.connect(DB_PATH)
+conn   = sqlite3.connect(DB_PATH)
 cursor = conn.cursor()
 
+# Activar integridad referencial en SQLite
+cursor.execute("PRAGMA foreign_keys = ON")
+
+# =============================================================================
+# DimCliente
+# =============================================================================
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS Dim_Cliente (
-    sk_cliente INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_cliente INTEGER UNIQUE,
-    nombre TEXT,
-    apellido TEXT,
-    email TEXT,
-    segmento TEXT,
-    ciudad TEXT
+CREATE TABLE IF NOT EXISTS DimCliente (
+    cliente_key  INTEGER PRIMARY KEY,
+    id_cliente   INTEGER UNIQUE,
+    nombre       TEXT,
+    apellido     TEXT,
+    email        TEXT,
+    segmento     TEXT,
+    ciudad       TEXT
 )
 """)
 
+# =============================================================================
+# DimProducto
+# =============================================================================
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS Dim_Producto (
-    sk_producto INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_producto INTEGER UNIQUE,
+CREATE TABLE IF NOT EXISTS DimProducto (
+    producto_key   INTEGER PRIMARY KEY,
+    id_producto    INTEGER UNIQUE,
     nombre_producto TEXT,
-    categoria TEXT,
-    precio_base REAL,
-    proveedor TEXT
+    categoria      TEXT,
+    proveedor      TEXT,
+    precio_base    REAL
 )
 """)
 
+# =============================================================================
+# DimTiempo
+# =============================================================================
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS Dim_Tiempo (
-    sk_tiempo INTEGER PRIMARY KEY AUTOINCREMENT,
-    fecha DATE UNIQUE,
-    dia INTEGER,
-    mes INTEGER,
-    anio INTEGER
+CREATE TABLE IF NOT EXISTS DimTiempo (
+    fecha_key   INTEGER PRIMARY KEY,
+    fecha       DATE UNIQUE,
+    dia         INTEGER,
+    mes         INTEGER,
+    nombre_mes  TEXT,
+    trimestre   INTEGER,
+    anio        INTEGER,
+    dia_semana  TEXT,
+    fin_semana  INTEGER
 )
 """)
 
+# =============================================================================
+# DimCanal
+# =============================================================================
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS Dim_Canal (
-    sk_canal INTEGER PRIMARY KEY AUTOINCREMENT,
-    canal TEXT UNIQUE
+CREATE TABLE IF NOT EXISTS DimCanal (
+    canal_key  INTEGER PRIMARY KEY,
+    canal      TEXT UNIQUE,
+    tipo_canal TEXT
 )
 """)
 
+# =============================================================================
+# DimTienda
+# =============================================================================
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS Fact_Ventas (
-    id_fact INTEGER PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE IF NOT EXISTS DimTienda (
+    tienda_key   INTEGER PRIMARY KEY,
+    nombre_tienda TEXT,
+    region       TEXT,
+    tipo_tienda  TEXT
+)
+""")
 
-    sk_cliente  INTEGER,
-    sk_producto INTEGER,
-    sk_tiempo   INTEGER,
-    sk_canal    INTEGER,
-
+# =============================================================================
+# FactVentas
+# =============================================================================
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS FactVentas (
+    id_fact_venta   INTEGER PRIMARY KEY AUTOINCREMENT,
+    fecha_key       INTEGER,
+    cliente_key     INTEGER,
+    producto_key    INTEGER,
+    canal_key       INTEGER,
+    tienda_key      INTEGER,
     cantidad        INTEGER,
     precio_unitario REAL,
-    monto_total     REAL,
+    total_venta     REAL,
+    tipo_venta      TEXT,
 
-    -- Evita duplicados: una venta es única por la combinación de
-    -- cliente, producto, tiempo, canal, cantidad y precio
-    UNIQUE (
-        sk_cliente,
-        sk_producto,
-        sk_tiempo,
-        sk_canal,
-        cantidad,
-        precio_unitario
-    ),
-
-    FOREIGN KEY(sk_cliente)  REFERENCES Dim_Cliente(sk_cliente),
-    FOREIGN KEY(sk_producto) REFERENCES Dim_Producto(sk_producto),
-    FOREIGN KEY(sk_tiempo)   REFERENCES Dim_Tiempo(sk_tiempo),
-    FOREIGN KEY(sk_canal)    REFERENCES Dim_Canal(sk_canal)
+    FOREIGN KEY(fecha_key)    REFERENCES DimTiempo(fecha_key),
+    FOREIGN KEY(cliente_key)  REFERENCES DimCliente(cliente_key),
+    FOREIGN KEY(producto_key) REFERENCES DimProducto(producto_key),
+    FOREIGN KEY(canal_key)    REFERENCES DimCanal(canal_key),
+    FOREIGN KEY(tienda_key)   REFERENCES DimTienda(tienda_key)
 )
 """)
 
-cursor.execute("""
-INSERT OR IGNORE INTO Dim_Canal(canal)
-VALUES ('POS'), ('WEB'), ('APP')
-""")
+# =============================================================================
+# Datos iniciales — DimCanal
+# =============================================================================
+canales = [
+    (1, "Web",           "Digital"),
+    (2, "App",           "Digital"),
+    (3, "Tienda Física", "Presencial"),
+]
+cursor.executemany("""
+    INSERT OR IGNORE INTO DimCanal (canal_key, canal, tipo_canal)
+    VALUES (?, ?, ?)
+""", canales)
 
 conn.commit()
 conn.close()
 
-print("Data Warehouse creado correctamente.")
+print("✅ Data Warehouse EV4 creado correctamente.")
+print("   Tablas: DimCliente, DimProducto, DimTiempo, DimCanal, DimTienda, FactVentas")
